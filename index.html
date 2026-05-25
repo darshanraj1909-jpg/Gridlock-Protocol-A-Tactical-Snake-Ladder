@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gridlock Protocol: Minimalist Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Gridlock Protocol</h1>
+    </header>
+
+    <div id="game-container">
+        <div id="board-wrapper">
+            <div id="board"></div>
+        </div>
+
+        <div id="sidebar">
+            <div class="panel" id="turn-control">
+                <div id="active-player-display">Awaiting Configuration</div>
+                <button class="btn" id="roll-btn" onclick="game.rollDice()" disabled>Execute Roll</button>
+                <div id="roll-result" style="margin-top: 15px; font-size: 1.75rem; font-weight: 700;">--</div>
+            </div>
+
+            <div class="panel">
+                <h3>Leaderboard</h3>
+                <div id="leaderboard-list"></div>
+            </div>
+
+            <div class="panel" style="flex: 1; display: flex; flex-direction: column;">
+                <h3>Operation Log</h3>
+                <div id="event-log"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="setup-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="font-weight: 500; letter-spacing: 1px;">System Setup</h2>
+            <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 5px;">Specify the number of structural units for deployment:</p>
+            <div class="setup-options">
+                <button class="btn" onclick="game.setup(2)">2 Units</button>
+                <button class="btn" onclick="game.setup(3)">3 Units</button>
+                <button class="btn" onclick="game.setup(4)">4 Units</button>
+                <button class="btn" onclick="game.setup(5)">5 Units</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tactical-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 id="modal-title" style="font-size: 1.5rem; font-weight: 600;">Tactical Node Triggered</h2>
+            <p style="margin-top: 5px; color: #94a3b8; font-size: 0.9rem;">Select an action card to resolve positioning parameter adjustments.</p>
+            <div class="card-container" id="tactical-cards"></div>
+        </div>
+    </div>
+
+    <div id="extraction-overlay" class="modal-overlay hidden">
+        <h1 style="font-size: 3rem; font-weight: 700; letter-spacing: 2px; color: var(--p-red);">EXTRACTION EVENT</h1>
+        <p style="font-size: 1.2rem; color: #94a3b8; margin-top: 5px;">Time-critical feedback loop required.</p>
+        <div class="extraction-btn-container">
+            <button id="init-extract" class="extract-btn" onclick="game.extractionClick('initiate')">Initiate Extraction</button>
+            <button id="intercept-protocol" class="extract-btn" onclick="game.extractionClick('intercept')">Intercept Protocol</button>
+        </div>
+    </div>
+
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1 id="victory-text" style="font-size: 2.2rem; font-weight: 600;">Operation Complete</h1>
+            <p id="victory-subtext" style="font-size: 1.05rem; margin-top: 15px; color: #94a3b8; line-height: 1.5;"></p>
+            <button class="btn" onclick="location.reload()" style="margin-top: 25px; max-width: 200px; margin-left: auto; margin-right: auto;">Reboot Board</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+ :root {
+            --bg-deep: #0a192f;
+            --panel-navy: #112240;
+            --cell-white: #ffffff;
+            --cell-alt: #f4f6f9;
+            --text-dark: #0f172a;
+            --text-light: #f8fafc;
+            --border-muted: #cbd5e1;
+            
+            /* Player Identity Accents */
+            --p-red: #ef4444;
+            --p-cyan: #06b6d4;
+            --p-green: #10b981;
+            --p-yellow: #f59e0b;
+            --p-purple: #8b5cf6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 1.5rem;
+            background: var(--panel-navy);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        /* --- Main Layout --- */
+        #game-container {
+            display: flex;
+            flex: 1;
+            padding: 30px;
+            gap: 30px;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* --- Sidebar Panel --- */
+        #sidebar {
+            width: 340px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel {
+            background: var(--panel-navy);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        #turn-control { text-align: center; }
+
+        #active-player-display {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .btn {
+            background: var(--text-light);
+            color: var(--bg-deep);
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            width: 100%;
+            border-radius: 6px;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: #e2e8f0;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        #leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .lb-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .lb-player {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .status-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        #event-log {
+            flex: 1;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 6px;
+            max-height: 250px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .log-msg {
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        /* --- Minimalist Board --- */
+        #board-wrapper {
+            position: relative;
+            background: #e2e8f0;
+            padding: 8px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: min(70vh, 100%);
+            aspect-ratio: 1 / 1;
+            border-radius: 8px;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            width: 100%;
+            height: 100%;
+            gap: 1px;
+            background: var(--border-muted);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: background-color 0.2s ease;
+        }
+
+        .cell.cell-white { background-color: var(--cell-white); }
+        .cell.cell-alt { background-color: var(--cell-alt); }
+
+        .cell:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* Elegant Mystery Nodes */
+        .cell.node {
+            background-color: var(--bg-deep) !important;
+            color: var(--text-light) !important;
+            font-size: 0px; /* Hide grid number */
+            animation: nodePulse 2s infinite ease-in-out;
+            border-radius: 4px;
+        }
+
+        .cell.node::before {
+            content: "?";
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--cell-white); /* Crisp white indicator */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { box-shadow: inset 0 0 0 1px #06b6d4, 0 0 2px rgba(6, 182, 212, 0.2); }
+            50% { box-shadow: inset 0 0 0 2px #06b6d4, 0 0 12px rgba(6, 182, 212, 0.8); }
+        }
+
+        /* --- Unified SVG Human Tokens --- */
+        @keyframes tokenFloat {
+            0%, 100% { transform: translateY(0); filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); }
+            50% { transform: translateY(-5px); filter: drop-shadow(0 6px 4px rgba(0,0,0,0.15)); }
+        }
+
+        .token {
+            width: clamp(22px, 3.5vw, 30px);
+            height: clamp(22px, 3.5vw, 30px);
+            position: absolute;
+            z-index: 10;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: tokenFloat 2.5s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .token svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--p-color);
+        }
+
+        /* --- Premium Glassmorphism Modals --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 25, 47, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: rgba(17, 34, 64, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .hidden { display: none !important; }
+
+        .setup-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .setup-options .btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .setup-options .btn:hover {
+            background: var(--text-light);
+            color: var(--bg-deep);
+        }
+
+        /* --- 3D Tactical Card Grid --- */
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            perspective: 1000px;
+            height: 170px;
+        }
+
+        @keyframes cardFadeUp {
+            0% { opacity: 0; transform: translateY(40px) rotate(0deg); }
+            100% { opacity: 1; transform: translateY(0) rotate(var(--fan-angle)); }
+        }
+
+        .tactical-card {
+            width: 95px;
+            height: 140px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transform-origin: bottom center;
+            opacity: 0;
+            animation: cardFadeUp 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation-delay: var(--delay);
+        }
+
+        .tactical-card:hover .card-inner {
+            transform: translateY(-15px) scale(1.08);
+        }
+
+        .tactical-card.revealed .card-inner {
+            transform: rotateY(180deg) scale(1.2);
+            z-index: 50;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transform-style: preserve-3d;
+            border-radius: 8px;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-front {
+            background: #1e293b;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Extraction Alert --- */
+        #extraction-overlay {
+            flex-direction: column;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--p-red);
+        }
+
+        .extraction-btn-container {
+            display: flex;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .extract-btn {
+            padding: 20px 35px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            letter-spacing: 1px;
+        }
+
+        .extract-btn:hover { transform: translateY(-2px); }
+        #init-extract { background: #059669; color: white; }
+        #intercept-protocol { background: #dc2626; color: white; }
+
+        /* --- UI Elements Mini Silhouette Icon --- */
+        .mini-icon {
+            width: 12px;
+            height: 12px;
+            display: inline-block;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 900px) {
+            #game-container { flex-direction: column; align-items: center; padding: 15px; }
+            #board-wrapper { max-width: 100%; }
+            #sidebar { width: 100%; }
+            .card-container { height: 120px; }
+            .tactical-card { width: 65px; height: 100px; }
+            .card-back { font-size: 0.65rem; }
+        }
